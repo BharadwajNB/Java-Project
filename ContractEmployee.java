@@ -6,8 +6,8 @@ package LeaveManagementSystem;
  */
 public class ContractEmployee extends Employee {
     
-    public ContractEmployee(int id, String name) {
-        super(id, name);
+    public ContractEmployee(int id, String name, String password) {
+        super(id, name, password); // Calls the parent constructor with password
         this.type = "Contract";
         calculateAnnualLeave();
     }

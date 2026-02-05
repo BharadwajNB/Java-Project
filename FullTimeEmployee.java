@@ -7,8 +7,8 @@ package LeaveManagementSystem;
  */
 public class FullTimeEmployee extends Employee {
     
-    public FullTimeEmployee(int id, String name) {
-        super(id, name); // Calls the parent constructor
+    public FullTimeEmployee(int id, String name, String password) {
+        super(id, name, password); // Calls the parent constructor with password
         this.type = "Full Time";
         calculateAnnualLeave(); // Set the balance immediately on creation
     }
