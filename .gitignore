@@ -1,0 +1,6 @@
+*.class
+LeaveManagementSystem/
+# Ignore VS Code or IntelliJ folders if they appear later
+.vscode/
+.idea/
+*.iml
