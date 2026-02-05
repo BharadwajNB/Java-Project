@@ -58,9 +58,10 @@ public class Main {
                 HOD hod = HOD.getInstance();
                 
                 System.out.print("Enter Username: ");
-                String hodUsername = scanner.nextLine();
+                String hodUsername = scanner.next(); // Use next() for single word
                 System.out.print("Enter Password: ");
-                String hodPassword = scanner.nextLine();
+                String hodPassword = scanner.next(); // Use next() for single word
+                scanner.nextLine(); // Consume remaining newline
                 
                 if (!hod.getUsername().equals(hodUsername) || !hod.authenticate(hodPassword)) {
                     System.out.println("❌ Invalid credentials!");
@@ -69,6 +70,7 @@ public class Main {
                 
                 System.out.println("✓ Login successful! Welcome, HOD");
                 hodMenu(system, hod, scanner);
+                
                 
             } else if (loginChoice == 3) {
                 // ADD NEW EMPLOYEE (SETUP)
@@ -109,13 +111,14 @@ public class Main {
                     String startDate = scanner.nextLine();
                     System.out.print("Enter End Date (YYYY-MM-DD): ");
                     String endDate = scanner.nextLine();
-                    System.out.print("Enter Number of Days: ");
-                    int days = scanner.nextInt();
-                    scanner.nextLine(); // consume newline
                     System.out.print("Enter Reason: ");
                     String reason = scanner.nextLine();
                     
                     try {
+                        // Calculate days from date range
+                        int days = calculateDaysBetweenDates(startDate, endDate);
+                        System.out.println("Calculated leave days: " + days);
+                        
                         LeaveRequest request = employee.submitLeaveRequest(startDate, endDate, days, reason);
                         system.addPendingRequest(request);
                     } catch (IllegalStateException | IllegalArgumentException e) {
@@ -250,5 +253,68 @@ public class Main {
         } else {
             System.out.println("Invalid type.");
         }
+    }
+    
+    // HELPER METHOD: Calculate days between two dates (inclusive)
+    private static int calculateDaysBetweenDates(String startDateStr, String endDateStr) {
+        try {
+            // Parse dates in YYYY-MM-DD format
+            String[] startParts = startDateStr.split("-");
+            String[] endParts = endDateStr.split("-");
+            
+            int startYear = Integer.parseInt(startParts[0]);
+            int startMonth = Integer.parseInt(startParts[1]);
+            int startDay = Integer.parseInt(startParts[2]);
+            
+            int endYear = Integer.parseInt(endParts[0]);
+            int endMonth = Integer.parseInt(endParts[1]);
+            int endDay = Integer.parseInt(endParts[2]);
+            
+            // Simple calculation using epoch days
+            // This works for dates after 1970 and is accurate enough for leave management
+            long startEpochDays = dateToEpochDays(startYear, startMonth, startDay);
+            long endEpochDays = dateToEpochDays(endYear, endMonth, endDay);
+            
+            long daysDiff = endEpochDays - startEpochDays + 1; // +1 because both days are inclusive
+            
+            if (daysDiff <= 0) {
+                throw new IllegalArgumentException("End date must be on or after start date!");
+            }
+            
+            return (int) daysDiff;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date format. Use YYYY-MM-DD (e.g., 2026-02-10)");
+        }
+    }
+    
+    // Helper to convert date to epoch days (days since 1970-01-01)
+    private static long dateToEpochDays(int year, int month, int day) {
+        // Simple approximation - works well enough for typical date ranges
+        long days = 0;
+        
+        // Add days for complete years since 1970
+        for (int y = 1970; y < year; y++) {
+            days += isLeapYear(y) ? 366 : 365;
+        }
+        
+        // Add days for complete months in current year
+        int[] monthDays = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (isLeapYear(year)) {
+            monthDays[1] = 29; // February has 29 days in leap year
+        }
+        
+        for (int m = 1; m < month; m++) {
+            days += monthDays[m - 1];
+        }
+        
+        // Add the days in current month
+        days += day;
+        
+        return days;
+    }
+    
+    // Check if year is a leap year
+    private static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 }
