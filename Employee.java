@@ -1,5 +1,7 @@
 package LeaveManagementSystem;
 
+import java.io.Serializable;
+
 /**
  * The Abstract Base Class.
  * 
@@ -10,8 +12,10 @@ package LeaveManagementSystem;
  *    to prevent direct unauthorized access.
  * 3. Inheritance: Subclasses will inherit common fields (name, id) 
  *    so we don't write them twice.
+ * 4. Serializable: Allows objects to be saved to file and loaded later.
  */
-public abstract class Employee {
+public abstract class Employee implements Serializable {
+    private static final long serialVersionUID = 1L;
     // Encapsulated fields (protected allows subclasses to access them directly)
     protected int id;
     protected String name;
