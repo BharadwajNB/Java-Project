@@ -170,25 +170,36 @@ public class Main {
                     break;
                     
                 case 2:
-                    // Approve/Reject request
-                    System.out.print("Enter Employee ID: ");
-                    int empId = scanner.nextInt();
+                    // Approve/Reject request - show all pending requests first
+                    ArrayList<LeaveRequest> requests = system.getAllPendingRequests();
+                    if (requests.isEmpty()) {
+                        System.out.println("ℹ No pending leave requests.");
+                        break;
+                    }
+                    
+                    System.out.println("\n--- Select a Leave Request ---");
+                    for (int i = 0; i < requests.size(); i++) {
+                        System.out.println((i + 1) + ". " + requests.get(i));
+                    }
+                    System.out.print("Enter request number (0 to cancel): ");
+                    int reqNum = scanner.nextInt();
                     scanner.nextLine(); // consume newline
                     
-                    Employee emp = system.findEmployeeById(empId);
+                    if (reqNum == 0 || reqNum > requests.size()) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
+                    
+                    LeaveRequest selectedRequest = requests.get(reqNum - 1);
+                    Employee emp = system.findEmployeeById(selectedRequest.getEmployeeId());
+                    
                     if (emp == null) {
-                        System.out.println("❌ Employee not found!");
+                        System.out.println("❌ Employee not found in system!");
                         break;
                     }
                     
-                    LeaveRequest request = emp.getPendingRequest();
-                    if (request == null) {
-                        System.out.println("ℹ No pending request for this employee.");
-                        break;
-                    }
-                    
-                    System.out.println("\nRequest Details:");
-                    System.out.println(request);
+                    System.out.println("\n--- Request Details ---");
+                    System.out.println(selectedRequest);
                     System.out.println("\n1. Approve");
                     System.out.println("2. Reject");
                     System.out.print("Choose action: ");
@@ -197,14 +208,14 @@ public class Main {
                     
                     if (action == 1) {
                         try {
-                            hod.approveLeaveRequest(request, emp);
-                            system.removePendingRequest(request);
+                            hod.approveLeaveRequest(selectedRequest, emp);
+                            system.removePendingRequest(selectedRequest);
                         } catch (IllegalStateException e) {
                             System.out.println("❌ " + e.getMessage());
                         }
                     } else if (action == 2) {
-                        hod.rejectLeaveRequest(request, emp);
-                        system.removePendingRequest(request);
+                        hod.rejectLeaveRequest(selectedRequest, emp);
+                        system.removePendingRequest(selectedRequest);
                     } else {
                         System.out.println("Invalid action.");
                     }
