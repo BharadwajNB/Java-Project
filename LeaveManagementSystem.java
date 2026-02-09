@@ -35,6 +35,18 @@ public class LeaveManagementSystem {
         saveData(); // Auto-save after adding
     }
 
+    // Remove employee by ID
+    public boolean removeEmployee(int id) {
+        Employee toRemove = findEmployeeById(id);
+        if (toRemove != null) {
+            employees.remove(toRemove);
+            System.out.println("Employee Removed Successfully: " + toRemove.getName());
+            saveData(); // Auto-save after removing
+            return true;
+        }
+        return false;
+    }
+
     // Display all employees
     public void displayAllEmployees() {
         System.out.println("\n--- Employee List ---");

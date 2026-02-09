@@ -149,7 +149,8 @@ public class Main {
             System.out.println("1. View All Pending Requests");
             System.out.println("2. Approve/Reject Leave Request");
             System.out.println("3. View All Employees");
-            System.out.println("4. Logout");
+            System.out.println("4. Delete Employee");
+            System.out.println("5. Logout");
             System.out.print("Choose option: ");
             
             int choice = scanner.nextInt();
@@ -227,6 +228,40 @@ public class Main {
                     break;
                     
                 case 4:
+                    // Delete employee
+                    system.displayAllEmployees();
+                    System.out.print("\nEnter Employee ID to delete (0 to cancel): ");
+                    int deleteId = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+                    
+                    if (deleteId == 0) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
+                    
+                    Employee empToDelete = system.findEmployeeById(deleteId);
+                    if (empToDelete == null) {
+                        System.out.println("❌ Employee not found!");
+                        break;
+                    }
+                    
+                    System.out.println("\n⚠ Are you sure you want to delete: " + empToDelete.getName() + "?");
+                    System.out.println("1. Yes, Delete");
+                    System.out.println("2. No, Cancel");
+                    System.out.print("Choose: ");
+                    int confirm = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+                    
+                    if (confirm == 1) {
+                        if (system.removeEmployee(deleteId)) {
+                            System.out.println("✓ Employee deleted successfully.");
+                        }
+                    } else {
+                        System.out.println("Deletion cancelled.");
+                    }
+                    break;
+                    
+                case 5:
                     // Logout
                     System.out.println("Logging out...");
                     return;
