@@ -23,8 +23,7 @@ public class Main {
             System.out.println("╚══════════════════════════════════╝");
             System.out.println("1. Login as Employee");
             System.out.println("2. Login as HOD");
-            System.out.println("3. Add New Employee (Setup)");
-            System.out.println("4. Exit");
+            System.out.println("3. Exit");
             System.out.print("Choose option: ");
             
             int loginChoice = scanner.nextInt();
@@ -73,10 +72,6 @@ public class Main {
                 
                 
             } else if (loginChoice == 3) {
-                // ADD NEW EMPLOYEE (SETUP)
-                addEmployeeMenu(system, scanner);
-                
-            } else if (loginChoice == 4) {
                 System.out.println("Exiting System. Goodbye!");
                 scanner.close();
                 System.exit(0);
@@ -149,8 +144,9 @@ public class Main {
             System.out.println("1. View All Pending Requests");
             System.out.println("2. Approve/Reject Leave Request");
             System.out.println("3. View All Employees");
-            System.out.println("4. Delete Employee");
-            System.out.println("5. Logout");
+            System.out.println("4. Add New Employee");
+            System.out.println("5. Delete Employee");
+            System.out.println("6. Logout");
             System.out.print("Choose option: ");
             
             int choice = scanner.nextInt();
@@ -228,6 +224,11 @@ public class Main {
                     break;
                     
                 case 4:
+                    // Add new employee
+                    addEmployeeMenu(system, scanner);
+                    break;
+                    
+                case 5:
                     // Delete employee
                     system.displayAllEmployees();
                     System.out.print("\nEnter Employee ID to delete (0 to cancel): ");
@@ -261,7 +262,7 @@ public class Main {
                     }
                     break;
                     
-                case 5:
+                case 6:
                     // Logout
                     System.out.println("Logging out...");
                     return;
