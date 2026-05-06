@@ -2,7 +2,7 @@
 
 A robust, console-based Java application for managing employee leave requests. This system features a dual-role login (Employee & HOD) and persistent data storage using Java Serialization.
 
-## 🚀 Features
+##  Features
 
 ### for Employees
 *   **Secure Login**: Authenticate using Employee ID and Password.
@@ -19,7 +19,7 @@ A robust, console-based Java application for managing employee leave requests. T
     *   Delete employees.
 *   **Review System**: Access detailed leave history and reasons.
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 *   **Language**: Java (JDK 8+)
 *   **User Interface**: Console/Terminal-based UI
@@ -37,7 +37,7 @@ The project is structured around the `LeaveManagementSystem` package:
 *   **`LeaveRequest.java`**: Data model representing a single leave application.
 *   **`HOD.java`**: Singleton class representing the Head of Department.
 
-## 💾 Database & Schema
+##  Database & Schema
 
 This project uses a **File-Based Database** system. Data is serialized into binary files for persistence.
 
@@ -96,7 +96,7 @@ classDiagram
     LeaveManagementSystem o-- LeaveRequest : manages
 ```
 
-## ⚙️ Setup & Run Instructions
+##  Setup & Run Instructions
 
 ### Prerequisites
 *   Java Development Kit (JDK) installed (version 8 or higher).
